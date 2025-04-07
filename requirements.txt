@@ -11,6 +11,7 @@ cycler==0.12.1
 defusedxml==0.7.1
 filelock==3.18.0
 fonttools==4.56.0
+greenlet==3.1.1
 hyperlink==21.0.0
 idna==3.10
 incremental==24.7.2
@@ -25,11 +26,13 @@ packaging==24.2
 pandas==2.2.3
 parsel==1.10.0
 pillow==11.2.0
+playwright==1.51.0
 Protego==0.4.0
 pyasn1==0.6.1
 pyasn1_modules==0.4.2
 pycparser==2.22
 PyDispatcher==2.0.7
+pyee==12.1.1
 pyOpenSSL==25.0.0
 pyparsing==3.2.3
 python-dateutil==2.9.0.post0
@@ -38,6 +41,7 @@ queuelib==1.8.0
 requests==2.32.3
 requests-file==2.1.0
 Scrapy==2.12.0
+scrapy-playwright==0.0.43
 seaborn==0.13.2
 service-identity==24.2.0
 six==1.17.0
