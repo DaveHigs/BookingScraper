@@ -29,6 +29,17 @@ DOWNLOADER_MIDDLEWARES = {
 #    "BookingScraper.pipelines.BookingscraperPipeline": 300,
 #}
 
+# Replaces default http and https download handlers with Scrapy_Playwright's
+DOWNLOAD_HANDLERS = {
+    "http": "scrapy_playwright.handler.ScrapyPlaywrightDownloadHandler",
+    "https": "scrapy_playwright.handler.ScrapyPlaywrightDownloadHandler",
+}
+
+# Enables asyncio support
+TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
+
+PLAYWRIGHT_BROWSER_TYPE = 'chromium'
+
 # Set settings whose default value is deprecated to a future-proof value
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
