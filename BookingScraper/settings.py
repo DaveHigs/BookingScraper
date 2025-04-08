@@ -38,7 +38,7 @@ DOWNLOAD_HANDLERS = {
 # Enables asyncio support
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 
-PLAYWRIGHT_BROWSER_TYPE = 'chromium'
+PLAYWRIGHT_BROWSER_TYPE = 'firefox'
 
 # Set settings whose default value is deprecated to a future-proof value
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
