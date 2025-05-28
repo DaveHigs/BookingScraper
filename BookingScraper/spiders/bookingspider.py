@@ -1,5 +1,5 @@
 import scrapy
-from scrapy_playwright.page import PageMethod
+from BookingScraper.items import HotelCard
 
 class BookingSpider(scrapy.Spider):
     name = 'Booking'
@@ -17,9 +17,36 @@ class BookingSpider(scrapy.Spider):
     async def parse(self, response):
         page = response.meta['playwright_page']
 
-        for i in range (5):
+        for i in range(10):
             await page.evaluate('window.scrollBy(0, document.body.scrollHeight)')
-            await page.wait_for_timeout(2000)
+            await page.wait_for_timeout(8000)
 
-        await page.screenshot(path='./screenshot.png', full_page=True)
+            load_more_button = page.get_by_role('button', name='Load more results')
+
+            if await load_more_button.is_visible():
+                await load_more_button.click()
+                await page.wait_for_timeout(8000)
+            else:
+                break
+
+        content = await page.content()
+        response = response.replace(body=content)
+
+        property_cards = response.css('div.aa97d6032f')
+
+        for card in property_cards:
+            hotel = HotelCard()
+            hotel['name'] = card.css('div.b87c897a13::text').get()
+            hotel['stars'] = card.css('div.ebc566407a::attr(aria-label)').get()[0]
+            hotel['rating'] = card.css('div.f63b14ab7a::text').get()
+            #raw_price = card.css('span.b87c397a13::text')
+            #clean_price = raw_price.replace('\xa0', '').replace('€', '').replace(',', '')
+            #hotel['price'] = clean_price
+            hotel['price'] = card.css('span.b87c397a13::text')
+            yield hotel
+
+
+        count = len(property_cards)
+        self.logger.info(f'Amount of property cards scraped: {count}')
+
         await page.close()
