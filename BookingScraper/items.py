@@ -6,3 +6,4 @@ class HotelCard(scrapy.Item):
     stars = scrapy.Field()
     rating = scrapy.Field()
     price = scrapy.Field()
+    currency = scrapy.Field()
