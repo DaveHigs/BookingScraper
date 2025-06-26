@@ -59,7 +59,7 @@ class BookingSpider(scrapy.Spider):
         self.logger.info(f'Amount of property cards scraped: {count}')
 
     def parse_details(self, response):
-        hotel = response.meta('hotel')
+        hotel = response.meta['hotel']
 
         hotel['address'] = response.css('div.b99b6ef58f::text').get()
 
