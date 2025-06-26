@@ -52,7 +52,7 @@ class BookingSpider(scrapy.Spider):
             full_url = card.css('a::attr(href)').get()
             hotel['property_url'] = full_url
 
-            yield scrapy.Request(url=full_url, callback=parse_details, meta={'hotel': hotel})
+            yield scrapy.Request(url=full_url, callback=self.parse_details, meta={'hotel': hotel})
 
 
         count = len(property_cards)
