@@ -30,8 +30,9 @@ class BookingSpider(scrapy.Spider):
                 break
 
         content = await page.content()
+        await page.close()
+        
         response = response.replace(body=content)
-
         property_cards = response.css('div.aa97d6032f')
 
         for card in property_cards:
@@ -49,5 +50,3 @@ class BookingSpider(scrapy.Spider):
 
         count = len(property_cards)
         self.logger.info(f'Amount of property cards scraped: {count}')
-
-        await page.close()
