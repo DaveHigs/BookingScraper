@@ -41,7 +41,7 @@ class BookingSpider(scrapy.Spider):
         for card in property_cards:
             hotel = HotelCard()
             hotel['name'] = card.css('div.b87c397a13::text').get()
-            hotel['city'], hotel['neighborhood'] = card.css('span.d823fbbeed::text').get().split(', ')
+            hotel['neighborhood'], hotel['city'] = card.css('span.d823fbbeed::text').get().split(', ')
             hotel['stars'] = card.css('div.ebc566407a::attr(aria-label)').get()[0]
             hotel['rating'] = card.css('div.f63b14ab7a::text').get()
             raw_price = card.css('span.b87c397a13::text').get()
