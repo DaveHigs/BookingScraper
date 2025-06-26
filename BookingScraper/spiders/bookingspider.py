@@ -14,6 +14,9 @@ class BookingSpider(scrapy.Spider):
                                     "playwright_include_page": True}
                              , callback=self.parse)
 
+    def __init__(self):
+        self.hotel_urls = []
+    
     async def parse(self, response):
         page = response.meta['playwright_page']
 
@@ -38,15 +41,26 @@ class BookingSpider(scrapy.Spider):
         for card in property_cards:
             hotel = HotelCard()
             hotel['name'] = card.css('div.b87c397a13::text').get()
+            hotel['city'], hotel['neighborhood'] = card.css('span.d823fbbeed::text').get().split(', ')
             hotel['stars'] = card.css('div.ebc566407a::attr(aria-label)').get()[0]
             hotel['rating'] = card.css('div.f63b14ab7a::text').get()
             raw_price = card.css('span.b87c397a13::text').get()
             clean_price = raw_price.replace('\xa0', '').replace('€', '').replace(',', '')
             hotel['price'] = clean_price
             hotel['currency'] = 'EUR'
+            hotel['free_cancellation'] = True if card.css('div.fff1944c52').get() else False
+            full_url = card.css('a::attr(href)').get()
+            hotel['property_url'] = full_url
 
-            yield hotel
+            yield scrapy.Request(url=full_url, callback=parse_details, meta={'hotel': hotel})
 
 
         count = len(property_cards)
         self.logger.info(f'Amount of property cards scraped: {count}')
+
+    def parse_details(self, response):
+        hotel = response.meta('hotel')
+
+        hotel['address'] = response.css('div.b99b6ef58f::text').get()
+
+        yield hotel
